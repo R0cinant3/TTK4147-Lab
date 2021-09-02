@@ -1,5 +1,7 @@
-
+#include <x86intrin.h>
 #include <time.h>
+#include <unistd.h>
+
 
 struct timespec timespec_normalized(time_t sec, long nsec);
 struct timespec timespec_sub(struct timespec lhs, struct timespec rhs);
