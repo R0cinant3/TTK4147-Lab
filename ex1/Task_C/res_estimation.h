@@ -5,11 +5,6 @@
 #include <sys/times.h>
 #include <unistd.h>
 #include <string.h>
+#include <sched.h>
 
-
-#define CPU_FREQ_MHZ 2599.992
-#define RATIO_NANO_TO_SECOND 1000000000 
-
-void res_rdtsc();
 void res_gettime();
-void res_times();

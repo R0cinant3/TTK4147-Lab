@@ -1,7 +1,7 @@
 # program executable name
 TARGET = main
 # compiler flags
-CFLAGS = -g -Wall -std=gnu11
+CFLAGS = -g -Wall -std=gnu11 -Werror
 # linker flags
 LDFLAGS = -g
 # list of sources
