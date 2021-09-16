@@ -84,7 +84,7 @@ void array_reserve(Array* a, long capacity){
     //Allocate capacity*8 Bytes 
     long* newSpace = malloc(capacity*sizeof(long));
     //Copy half the data from "a" into the new memory space
-    memcpy(newSpace, a->data, capacity/2*sizeof(long));
+    memcpy(newSpace, a->data, capacity/4*sizeof(long));
     //Destroy the old memory space
     array_destroy(*a);
     //Move the existing data into a

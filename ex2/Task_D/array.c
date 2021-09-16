@@ -96,10 +96,9 @@ void array_reserve(Array* a, long capacity){
 // Modifiers
 
 void array_insertBack(Array* a, long stuff){
+    printf("Pointer Start:\t%p\nPointer Current:\t%p\n", (void *)a->data, (void *)a->data[a->back-1]);
     printf("Current Capacity:\t%ld\nBack:\t%ld\nData:\t%ld\n", a->capacity, a->back, stuff);
-    if(a->back >= a->capacity) array_reserve(a,(a->capacity)*2);
+    if(a->back >= a->capacity) array_reserve(a,(a->capacity)*1.5);
     a->data[a->back] = stuff;
     a->back++;
 }
-
-
