@@ -21,7 +21,14 @@ void init(){
     sysclk_init();
     board_init();
     busy_delay_init(BOARD_OSC0_HZ);
-    
+	
+    gpio_configure_pin(TEST_A, GPIO_DIR_INPUT);
+	gpio_configure_pin(TEST_B, GPIO_DIR_INPUT);
+	gpio_configure_pin(TEST_C, GPIO_DIR_INPUT);
+	gpio_configure_pin(RESPONSE_A, GPIO_DIR_OUTPUT | GPIO_INIT_HIGH);
+	gpio_configure_pin(RESPONSE_B, GPIO_DIR_OUTPUT | GPIO_INIT_HIGH);
+	gpio_configure_pin(RESPONSE_C, GPIO_DIR_OUTPUT | GPIO_INIT_HIGH);
+	
     cpu_irq_disable();
     INTC_init_interrupts();
     INTC_register_interrupt(&interrupt_J3, AVR32_GPIO_IRQ_3, AVR32_INTC_INT1);
@@ -41,13 +48,29 @@ __attribute__((__interrupt__)) static void interrupt_J3(void){
 
 
 int main (void){
-    init();
-    
-    while(1){
-        gpio_toggle_pin(LED0_GPIO);
+	init();
+	
+	gpio_set_pin_high(LED0_GPIO);
+	//busy_delay_ms(1000);
+	
+	//for(int i = 0; i < 1000; i++){
 
-        printf("tick\n");
-        
-        busy_delay_ms(500);
-    }
+		while(1){
+			if(!gpio_get_pin_value(TEST_A)){
+				gpio_set_pin_low(RESPONSE_A);
+				busy_delay_us(5);
+				gpio_set_pin_high(RESPONSE_A);
+			}
+			if(!gpio_get_pin_value(TEST_B)){
+				gpio_set_pin_low(RESPONSE_B);
+				busy_delay_us(5);
+				gpio_set_pin_high(RESPONSE_B);
+			}
+			if(!gpio_get_pin_value(TEST_C)){
+				gpio_set_pin_low(RESPONSE_C);
+				busy_delay_us(5);
+				gpio_set_pin_high(RESPONSE_C);
+			}
+		}
+	gpio_set_pin_low(LED0_GPIO);
 }
