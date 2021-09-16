@@ -40,14 +40,18 @@ __attribute__((__interrupt__)) static void interrupt_J3(void){
 }
 
 
+
 int main (void){
     init();
     
-    while(1){
+    while(gpio_get_pin_value(TEST_A)){
         gpio_toggle_pin(LED0_GPIO);
 
         printf("tick\n");
         
         busy_delay_ms(500);
     }
+    gpio_set_pin_low(RESPONSE_A);
+    busy_delay_us(5);
+    gpio_set_pin_high(RESPONSE_A);
 }
