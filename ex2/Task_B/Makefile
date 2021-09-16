@@ -3,7 +3,7 @@ TARGET = main
 # compiler flags
 CFLAGS = -g -Wall -std=gnu11 -fsanitize=address
 # linker flags
-LDFLAGS = -g
+LDFLAGS = -g -fsanitize=address
 # list of sources
 SOURCES = $(shell find -name "*.c")
 # default rule, to compile everything
