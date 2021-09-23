@@ -89,9 +89,9 @@ static void response_vTask(void* args){
     struct responseTaskArgs a = *(struct responseTaskArgs*)args;
     while(1){
         if(gpio_pin_is_low(a.pin.test)){
-                gpio_set_pin_low(a.pin.response);
                 if(a.pin.test == TEST_C) busy_delay_ms(3);
-                else vTaskDelay(1);
+                gpio_set_pin_low(a.pin.response);
+                vTaskDelay(1);
 				gpio_set_pin_high(a.pin.response);
         }
     }
@@ -101,10 +101,9 @@ static void response_busy(void* args){
     struct responseTaskArgs a = *(struct responseTaskArgs*)args;
     while(1){
         if(gpio_pin_is_low(a.pin.test)){
+				if(a.pin.test == TEST_C) busy_delay_ms(3);
                 gpio_set_pin_low(a.pin.response);
-                if(a.pin.test == TEST_C) busy_delay_ms(3);
-                else busy_delay_short();
-				busy_delay_short();
+                busy_delay_short();
 				gpio_set_pin_high(a.pin.response);
         }
     }
@@ -113,17 +112,21 @@ static void response_busy(void* args){
 int main(){
 	init();
 
+/*
+
     xTaskCreate(response_vTask, "", 1024, (&(struct responseTaskArgs){{TEST_A, RESPONSE_A}}), tskIDLE_PRIORITY + 1, NULL);
     xTaskCreate(response_vTask, "", 1024, (&(struct responseTaskArgs){{TEST_B, RESPONSE_B}}), tskIDLE_PRIORITY + 1, NULL);
-    xTaskCreate(response_vTask, "", 1024, (&(struct responseTaskArgs){{TEST_C, RESPONSE_C}}), tskIDLE_PRIORITY + 1, NULL);
+    xTaskCreate(response_vTask, "", 1024, (&(struct responseTaskArgs){{TEST_C, RESPONSE_C}}), tskIDLE_PRIORITY + 1, NULL);*/
 
-    //xTaskCreate(response_busy, "", 1024, (&(struct responseTaskArgs){{TEST_A, RESPONSE_A}}), tskIDLE_PRIORITY + 1, NULL);
-    //xTaskCreate(response_busy, "", 1024, (&(struct responseTaskArgs){{TEST_B, RESPONSE_B}}), tskIDLE_PRIORITY + 1, NULL);
-    //xTaskCreate(response_busy, "", 1024, (&(struct responseTaskArgs){{TEST_C, RESPONSE_C}}), tskIDLE_PRIORITY + 1, NULL);
+
+    xTaskCreate(response_busy, "", 1024, (&(struct responseTaskArgs){{TEST_A, RESPONSE_A}}), tskIDLE_PRIORITY + 1, NULL);
+    xTaskCreate(response_busy, "", 1024, (&(struct responseTaskArgs){{TEST_B, RESPONSE_B}}), tskIDLE_PRIORITY + 1, NULL);
+    xTaskCreate(response_busy, "", 1024, (&(struct responseTaskArgs){{TEST_C, RESPONSE_C}}), tskIDLE_PRIORITY + 1, NULL);
 
 /*
 	xTaskCreate(taskFn, "LED0", 1024, (&(struct led_s){LED0_GPIO, LED0_DELAY}), tskIDLE_PRIORITY + 1, NULL);
-	xTaskCreate(taskFn, "LED1", 1024, (&(struct led_s){LED1_GPIO, LED1_DELAY}), tskIDLE_PRIORITY + 1, NULL);*/
+	xTaskCreate(taskFn, "LED1", 1024, (&(struct led_s){LED1_GPIO, LED1_DELAY}), tskIDLE_PRIORITY + 1, NULL);* /
+*/
 
 
 	// Start the scheduler, anything after this will not run.
