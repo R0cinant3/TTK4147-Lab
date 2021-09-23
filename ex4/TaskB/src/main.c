@@ -21,24 +21,20 @@
 #define TEST_C      AVR32_PIN_PA27
 #define RESPONSE_C  AVR32_PIN_PB00
 
-#define LED0_DELAY 500 / portTICK_RATE_MS
-#define LED1_DELAY 200 / portTICK_RATE_MS
-
-xTaskHandle TaskHandle_a_busy;
-xTaskHandle TaskHandle_a_vtask;
-xTaskHandle TaskHandle_b_busy;
-xTaskHandle TaskHandle_b_vtask;
-xTaskHandle TaskHandle_c_busy;
-xTaskHandle TaskHandle_c_vtask;
+#define LED0_DELAY 1000 / portTICK_RATE_MS
+#define LED1_DELAY 100 / portTICK_RATE_MS
 
 struct responseTaskArgs {
     struct {
-    uint32_t test;
-    uint32_t response;
+		uint32_t test;
+		uint32_t response;
     }pin;
-    uint32_t incrementer;
-    xTaskHandle TaskHandle;
 };
+
+//struct led_s{
+	//uint32_t port;
+	//portTickType delay;
+//};
 
 
 void busy_delay_ms(int delay){
@@ -75,19 +71,19 @@ void init(){
     #endif
 }
 
-// static void taskFn(void* args){
-//     struct led_s led = *(struct led_s*)args;
-// 	const portTickType delay = led.delay;
-	
-//     int iter = 0;
-
-// 	while(1){
-// 		gpio_toggle_pin(led.port);
-// 		printf("tick %d\n", iter++);
-		
-// 		vTaskDelay(delay);
-// 	}
-// }
+ //static void taskFn(void* args){
+	 //struct led_s led = *(struct led_s*)args;
+	 //const portTickType delay = led.delay;
+	 //
+	 //int iter = 0;
+//
+	 //while(1){
+		 //gpio_toggle_pin(led.port);
+		 //printf("tick %d\n", iter++);
+		 //
+		 //vTaskDelay(delay);
+	 //}
+ //}
 
 static void response_vTask(void* args){
     struct responseTaskArgs a = *(struct responseTaskArgs*)args;
@@ -96,10 +92,6 @@ static void response_vTask(void* args){
                 gpio_set_pin_low(a.pin.response);
 				vTaskDelay(1);
 				gpio_set_pin_high(a.pin.response);
-                a.incrementer++;
-        }
-        if(a.incrementer >= 1000){
-            vTaskDelete(a.TaskHandle);
         }
     }
 }
@@ -111,10 +103,6 @@ static void response_busy(void* args){
                 gpio_set_pin_low(a.pin.response);
 				busy_delay_short();
 				gpio_set_pin_high(a.pin.response);
-                a.incrementer++;
-        }
-        if(a.incrementer >= 1000){
-            vTaskDelete(a.TaskHandle);
         }
     }
 }
@@ -122,16 +110,17 @@ static void response_busy(void* args){
 int main(){
 	init();
 
-    xTaskCreate(response_vTask, "", 1024, (&(struct responseTaskArgs){{TEST_A, RESPONSE_A}, 0, TaskHandle_a_vtask}), tskIDLE_PRIORITY + 1, &TaskHandle_a_vtask);
-    xTaskCreate(response_vTask, "", 1024, (&(struct responseTaskArgs){{TEST_B, RESPONSE_B}, 0, TaskHandle_b_vtask}), tskIDLE_PRIORITY + 1, &TaskHandle_b_vtask);
-    xTaskCreate(response_vTask, "", 1024, (&(struct responseTaskArgs){{TEST_C, RESPONSE_C}, 0, TaskHandle_c_vtask}), tskIDLE_PRIORITY + 1, &TaskHandle_c_vtask);
+    xTaskCreate(response_vTask, "", 1024, (&(struct responseTaskArgs){{TEST_A, RESPONSE_A}}), tskIDLE_PRIORITY + 1, NULL);
+    xTaskCreate(response_vTask, "", 1024, (&(struct responseTaskArgs){{TEST_B, RESPONSE_B}}), tskIDLE_PRIORITY + 1, NULL);
+    xTaskCreate(response_vTask, "", 1024, (&(struct responseTaskArgs){{TEST_C, RESPONSE_C}}), tskIDLE_PRIORITY + 1, NULL);
 
-    xTaskCreate(response_busy, "", 1024, (&(struct responseTaskArgs){{TEST_A, RESPONSE_A}, 0, TaskHandle_a_busy}), tskIDLE_PRIORITY + 1, &TaskHandle_a_busy);
-    xTaskCreate(response_busy, "", 1024, (&(struct responseTaskArgs){{TEST_B, RESPONSE_B}, 0, TaskHandle_b_busy}), tskIDLE_PRIORITY + 1, &TaskHandle_b_busy);
-    xTaskCreate(response_busy, "", 1024, (&(struct responseTaskArgs){{TEST_C, RESPONSE_C}, 0, TaskHandle_c_busy}), tskIDLE_PRIORITY + 1, &TaskHandle_c_busy);  
+    //xTaskCreate(response_busy, "", 1024, (&(struct responseTaskArgs){{TEST_A, RESPONSE_A}}), tskIDLE_PRIORITY + 1, NULL);
+    //xTaskCreate(response_busy, "", 1024, (&(struct responseTaskArgs){{TEST_B, RESPONSE_B}}), tskIDLE_PRIORITY + 1, NULL);
+    //xTaskCreate(response_busy, "", 1024, (&(struct responseTaskArgs){{TEST_C, RESPONSE_C}}), tskIDLE_PRIORITY + 1, NULL);
 
-	// xTaskCreate(taskFn, "LED0", 1024, (&(struct led_s){LED0_GPIO, LED0_DELAY}), tskIDLE_PRIORITY + 1, NULL);
-	// xTaskCreate(taskFn, "LED1", 1024, (&(struct led_s){LED1_GPIO, LED1_DELAY}), tskIDLE_PRIORITY + 1, NULL);
+/*
+	xTaskCreate(taskFn, "LED0", 1024, (&(struct led_s){LED0_GPIO, LED0_DELAY}), tskIDLE_PRIORITY + 1, NULL);
+	xTaskCreate(taskFn, "LED1", 1024, (&(struct led_s){LED1_GPIO, LED1_DELAY}), tskIDLE_PRIORITY + 1, NULL);*/
 
 
 	// Start the scheduler, anything after this will not run.
