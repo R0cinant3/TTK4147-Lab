@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <sched.h>
 #include <unistd.h>
+#include <sys/time.h>
 #include "io.h"
 
 #define PIN_LOW_TIME 5
@@ -17,15 +18,31 @@ int set_cpu(int cpu_number){
     return pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpu);
 }
 
+struct timespec waketime;
+clock_gettime(CLOCK_REALTIME, &waketime);
+
+void timespec_add(struct timespec *t, long us){
+    t->tv_nsec += us*1000;
+    if(t->tv_nsec > 1000000000){
+        t->tv_nsec = t->tv_nsec - 1000000000;
+        t->tv_sec += 1;
+    }
+}
+
+struct timespec period = {.tv_sec = 0, .tv_nsec = 500*1000*1000};
+
+
 void* comms_function(void * args){
     int channel_id = (int)args;
     set_cpu(1);
     while(1){
-        if(io_read(channel_id)){
+        if(!io_read(channel_id)){
             printf("Channel: %d\t...Is now communicating!\n", channel_id);
             io_write(channel_id, 0);
             usleep(PIN_LOW_TIME);
             io_write(channel_id, 1);
+            waketime = timespec_add(waketime, period);
+            clock_nanosleep(CLOCK_REALTIME, TIMER_ABSTIME, &waketime, NULL);
         }
     }
 }

@@ -8,11 +8,11 @@
 
 #define PIN_LOW_TIME 5
 
-void comms_function(void * args){
+void* comms_function(void * args){
     int channel_id = (int)args;
     while(1){
-        if(io_read(channel_id)){
-            printf("Channel: %d\t...Is now communicating!\n");
+        if(!io_read(channel_id)){
+            // printf("Channel: %d\t...Is now communicating!\n");
             io_write(channel_id, 0);
             usleep(PIN_LOW_TIME);
             io_write(channel_id, 1);
