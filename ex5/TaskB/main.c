@@ -28,6 +28,12 @@ void comms_function(void * args){
     }
 }
 
+void troll_function(void * args){
+    while(1){
+        asm volatile("" ::: "memory");
+    }
+}
+
 int main(){
     io_init();
 
@@ -36,15 +42,27 @@ int main(){
     pthread_t thread2;
     pthread_t thread3;
 
+    pthread_t thread4;
+    pthread_t thread5;
+    pthread_t thread6;
+    
     //Creating threads
     pthread_create(&thread1, NULL, &comms_function, (void *) 1);
     pthread_create(&thread2, NULL, &comms_function, (void *) 2);
     pthread_create(&thread3, NULL, &comms_function, (void *) 3);
 
+    pthread_create(&thread4, NULL, &troll_function, NULL);
+    pthread_create(&thread5, NULL, &troll_function, NULL);
+    pthread_create(&thread6, NULL, &troll_function, NULL);
+
     //Joining threads
     pthread_join(thread1, NULL);
     pthread_join(thread2, NULL);
     pthread_join(thread3, NULL);
+
+    pthread_join(thread4, NULL);
+    pthread_join(thread5, NULL);
+    pthread_join(thread6, NULL);
 
     return 0;
 }
