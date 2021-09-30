@@ -110,13 +110,13 @@ static void response_busy(void* args){
 int main(){
 	init();
 
-    xTaskCreate(response_vTask, "", 1024, (&(struct responseTaskArgs){{TEST_A, RESPONSE_A}}), tskIDLE_PRIORITY + 1, NULL);
+    /*xTaskCreate(response_vTask, "", 1024, (&(struct responseTaskArgs){{TEST_A, RESPONSE_A}}), tskIDLE_PRIORITY + 1, NULL);
     xTaskCreate(response_vTask, "", 1024, (&(struct responseTaskArgs){{TEST_B, RESPONSE_B}}), tskIDLE_PRIORITY + 1, NULL);
-    xTaskCreate(response_vTask, "", 1024, (&(struct responseTaskArgs){{TEST_C, RESPONSE_C}}), tskIDLE_PRIORITY + 1, NULL);
+    xTaskCreate(response_vTask, "", 1024, (&(struct responseTaskArgs){{TEST_C, RESPONSE_C}}), tskIDLE_PRIORITY + 1, NULL);*/
 
-    //xTaskCreate(response_busy, "", 1024, (&(struct responseTaskArgs){{TEST_A, RESPONSE_A}}), tskIDLE_PRIORITY + 1, NULL);
-    //xTaskCreate(response_busy, "", 1024, (&(struct responseTaskArgs){{TEST_B, RESPONSE_B}}), tskIDLE_PRIORITY + 1, NULL);
-    //xTaskCreate(response_busy, "", 1024, (&(struct responseTaskArgs){{TEST_C, RESPONSE_C}}), tskIDLE_PRIORITY + 1, NULL);
+    xTaskCreate(response_busy, "", 1024, (&(struct responseTaskArgs){{TEST_A, RESPONSE_A}}), tskIDLE_PRIORITY + 1, NULL);
+    xTaskCreate(response_busy, "", 1024, (&(struct responseTaskArgs){{TEST_B, RESPONSE_B}}), tskIDLE_PRIORITY + 1, NULL);
+    xTaskCreate(response_busy, "", 1024, (&(struct responseTaskArgs){{TEST_C, RESPONSE_C}}), tskIDLE_PRIORITY + 1, NULL);
 
 /*
 	xTaskCreate(taskFn, "LED0", 1024, (&(struct led_s){LED0_GPIO, LED0_DELAY}), tskIDLE_PRIORITY + 1, NULL);
