@@ -10,7 +10,7 @@
 
 void comms_function(void * args){
     int channel_id = (int)args;
-    while(true){
+    while(1){
         if(io_read(channel_id)){
             printf("Channel: %d\t...Is now communicating!\n");
             io_write(channel_id, 0);
