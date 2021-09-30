@@ -29,21 +29,36 @@ void timespec_add(struct timespec *t, long us){
     }
 }
 
-struct timespec period = {.tv_sec = 0, .tv_nsec = 500*1000*1000};
-
-
 void* comms_function(void * args){
     int channel_id = (int)args;
     set_cpu(1);
+
+    struct timespec waketime;
+    clock_gettime(CLOCK_REALTIME, &waketime);
+
+    struct timespec period = {.tv_sec = 0, .tv_nsec = 500*1000*1000};
+
     while(1){
         if(!io_read(channel_id)){
-            printf("Channel: %d\t...Is now communicating!\n", channel_id);
+            // printf("Channel: %d\t...Is now communicating!\n", channel_id);
             io_write(channel_id, 0);
             usleep(PIN_LOW_TIME);
             io_write(channel_id, 1);
-            waketime = timespec_add(waketime, period);
-            clock_nanosleep(CLOCK_REALTIME, TIMER_ABSTIME, &waketime, NULL);
         }
+        waketime = timespec_add(waketime, period);
+        clock_nanosleep(CLOCK_REALTIME, TIMER_ABSTIME, &waketime, NULL);
+    }
+}
+
+void* test_function(void* args){
+    struct timespec waketime;
+    clock_gettime(CLOCK_REALTIME, &waketime);
+
+    struct timespec period = {.tv_sec = 0, .tv_nsec = 500*1000*1000};
+    while(1){
+        printf("Lyfe is pain\n");
+        waketime = timespec_add(waketime, period);
+        clock_nanosleep(CLOCK_REALTIME, TIMER_ABSTIME, &waketime, NULL);
     }
 }
 
@@ -59,13 +74,14 @@ int main(){
     //Declaring threads
     pthread_t threads[NUMBER_THREADS];
     pthread_t threads_troll[NUMBER_TROLL_THREADS];
+    pthread_t test_thread;
 
     //Creating threads
     for(int = 0; i < NUMBER_THREADS; i++)
         pthread_create(&threads[i], NULL, &comms_function, (void *)(i+1));
     for(int i = 0; i < NUMBER_TROLL_THREADS; i++)
         pthread_create(&threads_troll[i], NULL, &troll_function, NULL);
-
+    pthread_create(&test_thread, NULL, test_function, NULL);
     //Joining threads
     for(int i = 0; i < NUMBER_THREADS; i++){
         pthread_join(threads[i], NULL);
