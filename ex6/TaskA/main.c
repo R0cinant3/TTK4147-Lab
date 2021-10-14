@@ -27,7 +27,7 @@ int set_cpu(int cpu_number){
 
 
 void* troll_function(void * args){
-	set_cpu(1);
+	// set_cpu(1);
     while(1){
         asm volatile("" ::: "memory");
     }
@@ -39,7 +39,7 @@ void comms_function(void * args){
 
 
     long channel_id = (long)args;
-    set_cpu(1);
+    // set_cpu(1);
     while(1){
         if(!io_read(channel_id)){
             // printf("Channel: %d\t...Is now communicating!\n");
