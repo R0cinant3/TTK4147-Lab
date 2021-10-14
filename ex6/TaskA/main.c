@@ -71,16 +71,16 @@ int main(){
 	int mode = T_CPU(1);
  
 	//Declaring threads
-	pthread_t threads_troll[NUMBER_TROLL_THREADS];
+	// pthread_t threads_troll[NUMBER_TROLL_THREADS];
 
 	//Creating threads
 	rt_task_create(&a, "a", stack_size, prio, mode);
 	rt_task_create(&b, "b", stack_size, prio, mode);
 	rt_task_create(&c, "c", stack_size, prio, mode);
 
-	for(int i = 0; i < NUMBER_TROLL_THREADS; i++){
-		pthread_create(&threads_troll[i],NULL,(void*)troll_function,NULL);
-	}
+	// for(int i = 0; i < NUMBER_TROLL_THREADS; i++){
+	// 	pthread_create(&threads_troll[i],NULL,(void*)troll_function,NULL);
+	// }
 
 	//Start threads
 	rt_task_start(&a, comms_function,(void*)1);
@@ -89,9 +89,9 @@ int main(){
 
 
 	//Troll threads
-    	for(int i = 0; i < NUMBER_TROLL_THREADS; i++){
-        pthread_join(threads_troll[i], NULL);
-    	}
+    	// for(int i = 0; i < NUMBER_TROLL_THREADS; i++){
+        // pthread_join(threads_troll[i], NULL);
+    	// }
 	
 
 	while(1) {
