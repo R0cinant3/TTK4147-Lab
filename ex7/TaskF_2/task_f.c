@@ -10,13 +10,13 @@ pthread_t philosophers[NUMBER_OF_PHILOSOPHERS];
 void* pickup(int phil){
     int right = (phil + 1) % NUMBER_OF_PHILOSOPHERS;
 	int left = (phil + NUMBER_OF_PHILOSOPHERS) % NUMBER_OF_PHILOSOPHERS;
-    if(phil){
+    if(phil){ //The other phils are right handed
         pthread_mutex_lock(&forks[right]);
 		printf("Philosopher %d picked up fork %d\n", phil, right);
 		pthread_mutex_lock(&forks[left]);
 		printf("Philosopher %d picked up fork %d\n", phil, left);
     }
-    else{
+    else{ //Making phil 0 left handed
         pthread_mutex_lock(&forks[left]);
 		printf("Philosopher %d picked up fork %d\n", phil, left);
 		pthread_mutex_lock(&forks[right]);
@@ -62,7 +62,7 @@ int main(){
 	}
 
     for (i = 0; i < NUMBER_OF_PHILOSOPHERS; ++i) {
-		pthread_create(&philosophers[i], NULL, philosopher, (void *)(i+1));
+		pthread_create(&philosophers[i], NULL, philosopher, (void *)(i));
 	}
 
 	for (i = 0; i < NUMBER_OF_PHILOSOPHERS; ++i) {
