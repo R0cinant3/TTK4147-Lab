@@ -55,15 +55,15 @@ void comms_function(void * args){
         	io_write(channel_id, 1);
         }
 
-	if(rt_timer_read() > endTime){
-		rt_printf("time expired\n");
-		rt_task_delete(NULL);		
-	}
-	if(rt_task_yield()){
-		rt_printf("task failed to yield");
-		rt_task_delete(NULL);
-	}
-	rt_task_wait_period(&over_runned);
+		if(rt_timer_read() > endTime){
+			rt_printf("time expired\n");
+			rt_task_delete(NULL);		
+		}
+		if(rt_task_yield()){
+			rt_printf("task failed to yield");
+			rt_task_delete(NULL);
+		}
+		rt_task_wait_period(&over_runned);
     }
 	
 }
@@ -105,6 +105,6 @@ int main(){
 */
 	while(1) {
 		sleep(-1);
-}
+	}
 return 0;
 }
