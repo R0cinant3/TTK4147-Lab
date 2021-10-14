@@ -27,14 +27,14 @@ void* incrementingThreadFunction(){
 void* decrementingThreadFunction(){
     for (int j = 0; j < SIZE; j++) {
         //Start of critical section
-        pthread_mutex_lock(&mtx2);
         pthread_mutex_lock(&mtx1);
+        pthread_mutex_lock(&mtx2);
 
         // printf("Decrement is running!\n");
         glob_iter--;
         //End of critical section
-        pthread_mutex_unlock(&mtx2);
         pthread_mutex_unlock(&mtx1);
+        pthread_mutex_unlock(&mtx2);
 
     }
     return NULL;

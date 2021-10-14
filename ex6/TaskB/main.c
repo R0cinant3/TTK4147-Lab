@@ -63,7 +63,7 @@ void comms_function(void * args){
 			rt_printf("task failed to yield");
 			rt_task_delete(NULL);
 		}
-		rt_task_wait_period(NULL);
+		rt_task_wait_period(over_runned);
     }
 	
 }
