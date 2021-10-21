@@ -7,13 +7,21 @@
 #include <sys/mman.h>
 #include <unistd.h>
 
+#define TASK1_ID 1
+#define TASK2_ID 2
+#define TASK3_ID 3
+
+#define TASK1_PRIO 60
+#define TASK2_PRIO 65
+#define TASK3_PRIO 70
 
 RT_SEM sem;
+
+
 
 typedef struct TaskParameters{
     uint8_t id;
     uint8_t priority;
-    RTIME rt_time; 
 }TaskParameters;
 
 typedef struct Task{
@@ -35,7 +43,7 @@ void task_func(void * args){
 
     rt_sem_p(&sem, TM_INFINITE);
     rt_printf("Task ID: %d\tPriority: %d\r\n", taskparam.id, taskparam.priority);
-    rt_task_sleep(taskparam.rt_time);
+    rt_task_sleep(10);
     rt_sem_v(&sem);
 }
 
@@ -53,27 +61,23 @@ int main(){
     struct Task task2;
     struct Task task3;
 
-    task1.TaskParameters.id = 1;
-    task2.TaskParameters.id = 2;
-    task3.TaskParameters.id = 3;
+    // task1.TaskParameters.id = 1;
+    // task2.TaskParameters.id = 2;
+    // task3.TaskParameters.id = 3;
 
-    task1.TaskParameters.priority = 60;
-    task2.TaskParameters.priority = 65;
-    task3.TaskParameters.priority = 70;
+    // task1.TaskParameters.priority = 60;
+    // task2.TaskParameters.priority = 65;
+    // task3.TaskParameters.priority = 70;
 
-    task1.TaskParameters.rt_time = 100*1000;
-    task2.TaskParameters.rt_time = 100*1000;
-    task3.TaskParameters.rt_time = 100*1000;
- 
 	//Creating threads
-	rt_task_create(&task1.task, "Task1", stack_size, task1.TaskParameters.priority, mode);
-	rt_task_create(&task1.task, "Task2", stack_size, task2.TaskParameters.priority, mode);
-	rt_task_create(&task1.task, "Task3", stack_size, task3.TaskParameters.priority, mode);
+	rt_task_create(&task1.task, "Task1", stack_size, TASK1_PRIO, mode);
+	rt_task_create(&task1.task, "Task2", stack_size, TASK2_PRIO, mode);
+	rt_task_create(&task1.task, "Task3", stack_size, TASK3_PRIO, mode);
 
 	//Start threads
-	rt_task_start(&task1.task, task_func,(&task1.TaskParameters));
-	rt_task_start(&task1.task, task_func,(&task2.TaskParameters));
-	rt_task_start(&task1.task, task_func,(&task3.TaskParameters));
+	rt_task_start(&task1.task, task_func,(&(struct TaskParameters){TASK1_ID, TASK1_PRIO}));
+	rt_task_start(&task2.task, task_func,(&(struct TaskParameters){TASK2_ID, TASK2_PRIO}));
+	rt_task_start(&task3.task, task_func,(&(struct TaskParameters){TASK3_ID, TASK3_PRIO}));
 
     rt_task_sleep(100*1000*1000);
     rt_printf("Broadcasting...\r\n");
