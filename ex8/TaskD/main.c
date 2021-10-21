@@ -93,8 +93,8 @@ int main(){
     RT_TASK task2;
     RT_TASK task3;
 
-    rt_mutex_create(&mutex_low,"Low Mutex");
-    rt_mutex_create(&mutex_high,"High Mutex");
+    rt_mutex_create(&mutex_a,"A Mutex");
+    rt_mutex_create(&mutex_b,"B Mutex");
  
 	//Creating threads
 	rt_task_create(&task1, "Task1", stack_size, TASK1_PRIO, mode);
