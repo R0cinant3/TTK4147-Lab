@@ -42,7 +42,7 @@ void task_func(void * args){
             rt_mutex_acquire(&mutex_a, TM_INFINITE);
             rt_printf("Task: %d\t...Take Mutex A\r\n", taskparam.id);
             rt_printf("Task: %d\t...Busy-wait for 3 time units\r\n", taskparam.id);
-            busy_wait_us(3);
+            busy_wait_us(10);
             rt_printf("Task: %d\t...Acquire Mutex B\r\n", taskparam.id);
             rt_mutex_acquire(&mutex_b, TM_INFINITE);
             rt_printf("Task: %d\t...Busy-wait for 3 time units\r\n", taskparam.id);
@@ -58,7 +58,7 @@ void task_func(void * args){
         case 2:
             // rt_sem_p(&sem, TM_INFINITE);
             // rt_printf("Task: %d\t...Sleep for 1 time unit\r\n", taskparam.id);
-            rt_task_sleep(1);
+            rt_task_sleep(5);
             rt_mutex_acquire(&mutex_b, TM_INFINITE);
             rt_printf("Task: %d\t...Acquire Mutex B\r\n", taskparam.id);
             rt_printf("Task: %d\t...Busy-wait for 1 time unit\r\n", taskparam.id);
@@ -114,7 +114,6 @@ int main(){
     // rt_sem_broadcast(&sem);
     rt_task_sleep(100*1000*1000);
     // rt_printf("END...\r\n");
-    while(1);
     rt_sem_delete(&sem);
     rt_mutex_delete(&mutex_a);
     rt_mutex_delete(&mutex_b);
