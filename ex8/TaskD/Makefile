@@ -7,7 +7,7 @@ XENO_LIBS:=$(shell DESTDIR=$(XENO_DESTDIR) $(XENO_CONFIG) --skin native --ldflag
 TARGET = a.out
 
 # compiler flags
-CFLAGS = -g -std=gnu99 -D_GNU_SOURCE -Wall $(XENO_CFLAGS)
+CFLAGS = -g -std=gnu99 -D_GNU_SOURCE -fsanitize=thread -Wall $(XENO_CFLAGS)
 
 # linker flags
 LDFLAGS = -g -lpthread -lcomedi -lrt -lm $(XENO_LIBS)
@@ -23,11 +23,11 @@ OBJECTS = $(SOURCES:.c=.o)
 
 # link programs
 $(TARGET): $(OBJECTS)
-	gcc $^ -o $@ $(LDFLAGS)
+	clang $^ -o $@ $(LDFLAGS)
 	
 # compile
 %.o : %.c
-	gcc $(CFLAGS) -c -o $@ $<
+	clang $(CFLAGS) -c -o $@ $<
 
 # cleaning
 clean:
