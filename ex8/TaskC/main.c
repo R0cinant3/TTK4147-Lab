@@ -56,17 +56,19 @@ void task_func(void * args){
     switch(taskparam.id){
         case 1: 
             // rt_sem_p(&sem, TM_INFINITE);
-            rt_mutex_acquire(&mutex_low, TM_INFINITE);
             rt_printf("Task ID: %d\tPriority: %d\r\n", taskparam.id, taskparam.priority);
+            rt_mutex_acquire(&mutex_low, TM_INFINITE);
             busy_wait_us(taskparam.busy_time);
             rt_mutex_release(&mutex_low);
             // rt_sem_v(&sem);
             break;
         case 2:
+            rt_printf("Task ID: %d\tPriority: %d\r\n", taskparam.id, taskparam.priority);
             rt_task_sleep(taskparam.rt_time);
             busy_wait_us(taskparam.busy_time);
             break;
         case 3:
+            rt_printf("Task ID: %d\tPriority: %d\r\n", taskparam.id, taskparam.priority);
             rt_task_sleep(taskparam.rt_time);
             rt_mutex_acquire(&mutex_high, TM_INFINITE);
             // rt_sem_p(&sem, TM_INFINITE);
