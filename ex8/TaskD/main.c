@@ -41,11 +41,11 @@ void busy_wait_us(unsigned long delay){
 void task_func(void * args){
     set_cpu(1);
     struct TaskParameters taskparam = *(struct TaskParameters*)args;
-    rt_printf("Task ID: %d\tPriority: %d\r\n", taskparam.id, taskparam.priority);
+    // rt_printf("Task ID: %d\tPriority: %d\r\n", taskparam.id, taskparam.priority);
     switch(taskparam.id){
         case 1: 
-            rt_printf("Task: %d\t...Take Mutex A\r\n", taskparam.id);
             rt_mutex_acquire(&mutex_a, TM_INFINITE);
+            rt_printf("Task: %d\t...Take Mutex A\r\n", taskparam.id);
             rt_printf("Task: %d\t...Busy-wait for 3 time units\r\n", taskparam.id);
             busy_wait_us(3);
             rt_printf("Task: %d\t...Acquire Mutex B\r\n", taskparam.id);
@@ -61,9 +61,9 @@ void task_func(void * args){
             break;
         case 2:
             // rt_printf("Task: %d\t...Sleep for 1 time unit\r\n", taskparam.id);
-            // rt_task_sleep(1);
-            rt_printf("Task: %d\t...Acquire Mutex B\r\n", taskparam.id);
+            rt_task_sleep(1);
             rt_mutex_acquire(&mutex_b, TM_INFINITE);
+            rt_printf("Task: %d\t...Acquire Mutex B\r\n", taskparam.id);
             rt_printf("Task: %d\t...Busy-wait for 1 time unit\r\n", taskparam.id);
             busy_wait_us(1);
             rt_printf("Task: %d\t...Acquire Mutex A\r\n", taskparam.id);
