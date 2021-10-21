@@ -6,6 +6,7 @@
 #include <sys/mman.h>
 #include <unistd.h>
 
+
 RT_SEM sem;
 
 typedef struct TaskParameters{
@@ -62,7 +63,6 @@ int main(){
     task1.TaskParameters.rt_time = 100*1000;
     task2.TaskParameters.rt_time = 100*1000;
     task3.TaskParameters.rt_time = 100*1000;
-
  
 	//Creating threads
 	rt_task_create(&task1.task, "Task1", stack_size, task1.TaskParameters.priority, mode);
