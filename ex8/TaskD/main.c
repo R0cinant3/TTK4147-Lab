@@ -44,21 +44,29 @@ void task_func(void * args){
     rt_printf("Task ID: %d\tPriority: %d\r\n", taskparam.id, taskparam.priority);
     switch(taskparam.id){
         case 1: 
+            rt_printf("Task: %d\t...Acquire Mutex A\r\n", taskparam.id);
             rt_mutex_acquire(&mutex_a, TM_INFINITE);
             busy_wait_us(3);
+            rt_printf("Task: %d\t...Acquire Mutex B\r\n", taskparam.id);
             rt_mutex_acquire(&mutex_b, TM_INFINITE);
             busy_wait_us(3);
+            rt_printf("Task: %d\t...Release Mutex B\r\n", taskparam.id);
             rt_mutex_release(&mutex_b);
+            rt_printf("Task: %d\t...Release Mutex A\r\n", taskparam.id);
             rt_mutex_release(&mutex_a);
             busy_wait_us(1);
             break;
         case 2:
             rt_task_sleep(1);
+            rt_printf("Task: %d\t...Acquire Mutex B\r\n", taskparam.id);
             rt_mutex_acquire(&mutex_b, TM_INFINITE);
             busy_wait_us(1);
+            rt_printf("Task: %d\t...Acquire Mutex A\r\n", taskparam.id);
             rt_mutex_acquire(&mutex_a, TM_INFINITE);
             busy_wait_us(2);
+            rt_printf("Task: %d\t...Release Mutex A\r\n", taskparam.id);
             rt_mutex_release(&mutex_a);
+            rt_printf("Task: %d\t...Release Mutex B\r\n", taskparam.id);
             rt_mutex_release(&mutex_b);
             busy_wait_us(1);
             break;
