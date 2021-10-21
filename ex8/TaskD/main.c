@@ -44,30 +44,37 @@ void task_func(void * args){
     rt_printf("Task ID: %d\tPriority: %d\r\n", taskparam.id, taskparam.priority);
     switch(taskparam.id){
         case 1: 
-            rt_printf("Task: %d\t...Acquire Mutex A\r\n", taskparam.id);
+            rt_printf("Task: %d\t...Take Mutex A\r\n", taskparam.id);
             rt_mutex_acquire(&mutex_a, TM_INFINITE);
+            rt_printf("Task: %d\t...Busy-wait for 3 time units\r\n", taskparam.id);
             busy_wait_us(3);
             rt_printf("Task: %d\t...Acquire Mutex B\r\n", taskparam.id);
             rt_mutex_acquire(&mutex_b, TM_INFINITE);
+            rt_printf("Task: %d\t...Busy-wait for 3 time units\r\n", taskparam.id);
             busy_wait_us(3);
             rt_printf("Task: %d\t...Release Mutex B\r\n", taskparam.id);
             rt_mutex_release(&mutex_b);
             rt_printf("Task: %d\t...Release Mutex A\r\n", taskparam.id);
             rt_mutex_release(&mutex_a);
+            rt_printf("Task: %d\t...Busy-wait for 1 time unit\r\n", taskparam.id);
             busy_wait_us(1);
             break;
         case 2:
+            rt_printf("Task: %d\t...Sleep for 1 time unit\r\n", taskparam.id);
             rt_task_sleep(1);
             rt_printf("Task: %d\t...Acquire Mutex B\r\n", taskparam.id);
             rt_mutex_acquire(&mutex_b, TM_INFINITE);
+            rt_printf("Task: %d\t...Busy-wait for 1 time unit\r\n", taskparam.id);
             busy_wait_us(1);
             rt_printf("Task: %d\t...Acquire Mutex A\r\n", taskparam.id);
             rt_mutex_acquire(&mutex_a, TM_INFINITE);
+            rt_printf("Task: %d\t...Busy-wait for 2 time units\r\n", taskparam.id);
             busy_wait_us(2);
             rt_printf("Task: %d\t...Release Mutex A\r\n", taskparam.id);
             rt_mutex_release(&mutex_a);
             rt_printf("Task: %d\t...Release Mutex B\r\n", taskparam.id);
             rt_mutex_release(&mutex_b);
+            rt_printf("Task: %d\t...Busy-wait for 1 time unit\r\n", taskparam.id);
             busy_wait_us(1);
             break;
     }
