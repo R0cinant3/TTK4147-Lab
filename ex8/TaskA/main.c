@@ -42,6 +42,7 @@ void task_func(void * args){
     struct TaskParameters taskparam = *(struct TaskParameters*)args;
 
     rt_sem_p(&sem, TM_INFINITE);
+    rt_task_sleep(10);
     rt_printf("Task ID: %d\tPriority: %d\r\n", taskparam.id, taskparam.priority);
     rt_task_sleep(10);
     rt_sem_v(&sem);
