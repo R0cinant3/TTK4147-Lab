@@ -72,8 +72,8 @@ int main(){
 
 	//Creating threads
 	rt_task_create(&task1.task, "Task1", stack_size, TASK1_PRIO, mode);
-	rt_task_create(&task1.task, "Task2", stack_size, TASK2_PRIO, mode);
-	rt_task_create(&task1.task, "Task3", stack_size, TASK3_PRIO, mode);
+	rt_task_create(&task2.task, "Task2", stack_size, TASK2_PRIO, mode);
+	rt_task_create(&task3.task, "Task3", stack_size, TASK3_PRIO, mode);
 
 	//Start threads
 	rt_task_start(&task1.task, task_func,(&(struct TaskParameters){TASK1_ID, TASK1_PRIO}));
