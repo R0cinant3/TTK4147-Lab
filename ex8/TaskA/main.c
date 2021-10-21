@@ -31,7 +31,7 @@ int set_cpu(int cpu_number){
 
 void task_func(void * args){
     set_cpu(1);
-    TaskParameters taskparam = (TaskParameters)args;
+    struct TaskParameters taskparam = *(struct TaskParameters*)args;
 
     rt_sem_p(&sem, TM_INFINITE);
     rt_printf("Task ID: %d\tPriority: %d\r\n", taskparam.id, taskparam.priority);
@@ -49,9 +49,9 @@ int main(){
 
     rt_sem_create(&sem, "Semaphore", 0, S_PRIO);
 
-    Task task1;
-    Task task2;
-    Task task3;
+    struct Task task1;
+    struct Task task2;
+    struct Task task3;
 
     task1.TaskParameters.id = 1;
     task2.TaskParameters.id = 2;
@@ -71,9 +71,9 @@ int main(){
 	rt_task_create(&task1.task, "Task3", stack_size, task3.TaskParameters.priority, mode);
 
 	//Start threads
-	rt_task_start(&task1.task, task_func,(void*)task1.TaskParameters);
-	rt_task_start(&task1.task, task_func,(void*)task2.TaskParameters);
-	rt_task_start(&task1.task, task_func,(void*)task3.TaskParameters);
+	rt_task_start(&task1.task, task_func,(&task1.TaskParameters));
+	rt_task_start(&task1.task, task_func,(&task2.TaskParameters));
+	rt_task_start(&task1.task, task_func,(&task3.TaskParameters));
 
     rt_task_sleep(100*1000*1000);
     rt_printf("Broadcasting...\r\n");
