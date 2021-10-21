@@ -28,7 +28,7 @@ int set_cpu(int cpu_number){
 
 void busy_wait_us(unsigned long delay){
     for(; delay > 0; delay--){
-        rt_timer_spin(1000);
+        rt_timer_spin(10000);
     }
 }
 
@@ -58,7 +58,7 @@ void task_func(void * args){
         case 2:
             rt_sem_p(&sem, TM_INFINITE);
             // rt_printf("Task: %d\t...Sleep for 1 time unit\r\n", taskparam.id);
-            rt_task_sleep(1);
+            rt_task_sleep(10000);
             rt_mutex_acquire(&mutex_b, TM_INFINITE);
             rt_printf("Task: %d\t...Acquire Mutex B\r\n", taskparam.id);
             rt_printf("Task: %d\t...Busy-wait for 1 time unit\r\n", taskparam.id);
