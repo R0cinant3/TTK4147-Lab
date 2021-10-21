@@ -79,14 +79,6 @@ int main(){
 
     rt_sem_create(&sem, "Semaphore", 0, S_PRIO);
 
-    TaskParameters.rt_time = 0;
-    task2.TaskParameters.rt_time = 1;
-    task3.TaskParameters.rt_time = 2;
-
-    task1.TaskParameters.busy_time = 3;
-    task2.TaskParameters.busy_time = 5;
-    task3.TaskParameters.busy_time = 2;
-
     RT_TASK task1;
     RT_TASK task2;
     RT_TASK task3;
