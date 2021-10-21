@@ -114,7 +114,7 @@ int main(){
     // rt_sem_broadcast(&sem);
     rt_task_sleep(100*1000*1000);
     // rt_printf("END...\r\n");
-
+    while(1);
     rt_sem_delete(&sem);
     rt_mutex_delete(&mutex_a);
     rt_mutex_delete(&mutex_b);
