@@ -9,12 +9,6 @@
 #include <sys/mman.h>
 #include <unistd.h>
 
-// #define TASK1_ID 1
-// #define TASK2_ID 2
-
-// #define TASK1_PRIO 60
-// #define TASK2_PRIO 70
-
 RT_SEM sem;
 RT_MUTEX mutex_a;
 RT_MUTEX mutex_b;
