@@ -9,7 +9,7 @@
 #include <sys/mman.h>
 #include <unistd.h>
 
-// RT_SEM sem;
+RT_SEM sem;
 RT_MUTEX mutex_a;
 RT_MUTEX mutex_b;
 
@@ -89,7 +89,7 @@ int main(){
 
     rt_task_shadow(NULL, "Main", 65, mode);
 
-    // rt_sem_create(&sem, "Semaphore", 0, S_PRIO);
+    rt_sem_create(&sem, "Semaphore", 0, S_PRIO);
 
     RT_TASK task1;
     RT_TASK task2;
@@ -105,13 +105,13 @@ int main(){
 	rt_task_start(&task1, task_func,(&(struct TaskParameters){task1_id, task1_prio}));
 	rt_task_start(&task2, task_func,(&(struct TaskParameters){task2_id, task2_prio}));
 
-    // rt_task_sleep(100*1000*1000);
-    // rt_printf("Broadcasting...\r\n");
-    // rt_sem_broadcast(&sem);
-    // rt_task_sleep(100*1000*1000);
-    // rt_printf("END...\r\n");
+    rt_task_sleep(100*1000*1000);
+    rt_printf("Broadcasting...\r\n");
+    rt_sem_broadcast(&sem);
+    rt_task_sleep(100*1000*1000);
+    rt_printf("END...\r\n");
 
-    // rt_sem_delete(&sem);
+    rt_sem_delete(&sem);
 
 
     return 0;
