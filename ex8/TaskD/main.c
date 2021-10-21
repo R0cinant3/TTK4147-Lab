@@ -11,19 +11,9 @@
 
 #define TASK1_ID 1
 #define TASK2_ID 2
-#define TASK3_ID 3
 
 #define TASK1_PRIO 60
-#define TASK2_PRIO 65
-#define TASK3_PRIO 70
-
-#define TASK1_RT_TIME 0
-#define TASK2_RT_TIME 1
-#define TASK3_RT_TIME 2
-
-#define TASK1_BUSY_TIME 3
-#define TASK2_BUSY_TIME 5
-#define TASK3_BUSY_TIME 2
+#define TASK2_PRIO 70
 
 RT_SEM sem;
 RT_MUTEX mutex_a;
@@ -32,8 +22,6 @@ RT_MUTEX mutex_b;
 typedef struct TaskParameters{
     uint8_t id;
     uint8_t priority;
-    RTIME rt_time;
-    unsigned long busy_time;
 }TaskParameters;
 
 int set_cpu(int cpu_number){
@@ -53,9 +41,9 @@ void busy_wait_us(unsigned long delay){
 void task_func(void * args){
     set_cpu(1);
     struct TaskParameters taskparam = *(struct TaskParameters*)args;
+    rt_printf("Task ID: %d\tPriority: %d\r\n", taskparam.id, taskparam.priority);
     switch(taskparam.id){
         case 1: 
-            rt_printf("Task ID: %d\tPriority: %d\r\n", taskparam.id, taskparam.priority);
             rt_mutex_acquire(&mutex_a, TM_INFINITE);
             busy_wait_us(3);
             rt_mutex_acquire(&mutex_b, TM_INFINITE);
@@ -65,7 +53,6 @@ void task_func(void * args){
             busy_wait_us(1);
             break;
         case 2:
-            rt_printf("Task ID: %d\tPriority: %d\r\n", taskparam.id, taskparam.priority);
             rt_task_sleep(1);
             rt_mutex_acquire(&mutex_b, TM_INFINITE);
             busy_wait_us(1);
@@ -91,7 +78,6 @@ int main(){
 
     RT_TASK task1;
     RT_TASK task2;
-    RT_TASK task3;
 
     rt_mutex_create(&mutex_a,"A Mutex");
     rt_mutex_create(&mutex_b,"B Mutex");
@@ -99,12 +85,10 @@ int main(){
 	//Creating threads
 	rt_task_create(&task1, "Task1", stack_size, TASK1_PRIO, mode);
 	rt_task_create(&task2, "Task2", stack_size, TASK2_PRIO, mode);
-	rt_task_create(&task3, "Task3", stack_size, TASK3_PRIO, mode);
 
 	//Start threads
-	rt_task_start(&task1, task_func,(&(struct TaskParameters){TASK1_ID, TASK1_PRIO, TASK1_RT_TIME, TASK1_BUSY_TIME}));
-	rt_task_start(&task2, task_func,(&(struct TaskParameters){TASK2_ID, TASK2_PRIO, TASK2_RT_TIME, TASK2_BUSY_TIME}));
-	rt_task_start(&task3, task_func,(&(struct TaskParameters){TASK3_ID, TASK3_PRIO, TASK3_RT_TIME, TASK3_BUSY_TIME}));
+	rt_task_start(&task1, task_func,(&(struct TaskParameters){TASK1_ID, TASK1_PRIO}));
+	rt_task_start(&task2, task_func,(&(struct TaskParameters){TASK2_ID, TASK2_PRIO}));
 
     rt_task_sleep(100*1000*1000);
     rt_printf("Broadcasting...\r\n");
