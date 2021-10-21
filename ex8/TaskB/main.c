@@ -79,7 +79,7 @@ int main(){
 
     rt_task_shadow(NULL, "Main", 65, mode);
 
-    rt_sem_create(&sem, "Semaphore", 1, S_PRIO);
+    rt_sem_create(&sem, "Semaphore", 0, S_PRIO);
 
     RT_TASK task1;
     RT_TASK task2;
