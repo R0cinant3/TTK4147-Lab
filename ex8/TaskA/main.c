@@ -24,11 +24,6 @@ typedef struct TaskParameters{
     uint8_t priority;
 }TaskParameters;
 
-typedef struct Task{
-    RT_TASK task;
-    TaskParameters task_param;
-}Task;
-
 int set_cpu(int cpu_number){
 	cpu_set_t cpu;
 	CPU_ZERO(&cpu);
@@ -58,27 +53,19 @@ int main(){
 
     rt_sem_create(&sem, "Semaphore", 0, S_PRIO);
 
-    struct Task task1;
-    struct Task task2;
-    struct Task task3;
-
-    // task1.TaskParameters.id = 1;
-    // task2.TaskParameters.id = 2;
-    // task3.TaskParameters.id = 3;
-
-    // task1.TaskParameters.priority = 60;
-    // task2.TaskParameters.priority = 65;
-    // task3.TaskParameters.priority = 70;
+    RT_TASK task1;
+    RT_TASK task2;
+    RT_TASK task3;
 
 	//Creating threads
-	rt_task_create(&task1.task, "Task1", stack_size, TASK1_PRIO, mode);
-	rt_task_create(&task2.task, "Task2", stack_size, TASK2_PRIO, mode);
-	rt_task_create(&task3.task, "Task3", stack_size, TASK3_PRIO, mode);
+	rt_task_create(&task1, "Task1", stack_size, TASK1_PRIO, mode);
+	rt_task_create(&task2, "Task2", stack_size, TASK2_PRIO, mode);
+	rt_task_create(&task3, "Task3", stack_size, TASK3_PRIO, mode);
 
 	//Start threads
-	rt_task_start(&task1.task, task_func,(&(struct TaskParameters){TASK1_ID, TASK1_PRIO}));
-	rt_task_start(&task2.task, task_func,(&(struct TaskParameters){TASK2_ID, TASK2_PRIO}));
-	rt_task_start(&task3.task, task_func,(&(struct TaskParameters){TASK3_ID, TASK3_PRIO}));
+	rt_task_start(&task1, task_func,(&(struct TaskParameters){TASK1_ID, TASK1_PRIO}));
+	rt_task_start(&task2, task_func,(&(struct TaskParameters){TASK2_ID, TASK2_PRIO}));
+	rt_task_start(&task3, task_func,(&(struct TaskParameters){TASK3_ID, TASK3_PRIO}));
 
     rt_task_sleep(100*1000*1000);
     rt_printf("Broadcasting...\r\n");
