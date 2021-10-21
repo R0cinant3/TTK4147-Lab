@@ -18,7 +18,7 @@ typedef struct TaskParameters{
 typedef struct Task{
     RT_TASK task;
     TaskParameters task_param;
-}Task
+}Task;
 
 int set_cpu(int cpu_number){
 	cpu_set_t cpu;
