@@ -26,8 +26,7 @@
 #define TASK3_BUSY_TIME 2
 
 RT_SEM sem;
-RT_MUTEX mutex_low;
-RT_MUTEX mutex_high;
+RT_MUTEX mutex;
 
 typedef struct TaskParameters{
     uint8_t id;
@@ -57,9 +56,9 @@ void task_func(void * args){
         case 1: 
             // rt_sem_p(&sem, TM_INFINITE);
             rt_printf("Task ID: %d\tPriority: %d\r\n", taskparam.id, taskparam.priority);
-            rt_mutex_acquire(&mutex_low, TM_INFINITE);
+            rt_mutex_acquire(&mutex, TM_INFINITE);
             busy_wait_us(taskparam.busy_time);
-            rt_mutex_release(&mutex_low);
+            rt_mutex_release(&mutex);
             // rt_sem_v(&sem);
             break;
         case 2:
@@ -70,10 +69,10 @@ void task_func(void * args){
         case 3:
             rt_printf("Task ID: %d\tPriority: %d\r\n", taskparam.id, taskparam.priority);
             rt_task_sleep(taskparam.rt_time);
-            rt_mutex_acquire(&mutex_low, TM_INFINITE);
+            rt_mutex_acquire(&mutex, TM_INFINITE);
             // rt_sem_p(&sem, TM_INFINITE);
             busy_wait_us(taskparam.busy_time);
-            rt_mutex_release(&mutex_low);
+            rt_mutex_release(&mutex);
             // rt_sem_v(&sem);
             break;
     }
