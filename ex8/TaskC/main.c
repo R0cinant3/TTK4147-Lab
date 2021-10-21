@@ -70,10 +70,10 @@ void task_func(void * args){
         case 3:
             rt_printf("Task ID: %d\tPriority: %d\r\n", taskparam.id, taskparam.priority);
             rt_task_sleep(taskparam.rt_time);
-            rt_mutex_acquire(&mutex_high, TM_INFINITE);
+            rt_mutex_acquire(&mutex_low, TM_INFINITE);
             // rt_sem_p(&sem, TM_INFINITE);
             busy_wait_us(taskparam.busy_time);
-            rt_mutex_release(&mutex_high);
+            rt_mutex_release(&mutex_low);
             // rt_sem_v(&sem);
             break;
     }
