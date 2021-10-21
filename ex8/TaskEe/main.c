@@ -17,7 +17,7 @@ RT_TASK task1;
 RT_TASK task2;
 
 int task1_prio = 60;
-int task2_prio = 70
+int task2_prio = 70;
 
 typedef struct TaskParameters{
     uint8_t id;
