@@ -9,11 +9,11 @@
 #include <sys/mman.h>
 #include <unistd.h>
 
-#define TASK1_ID 1
-#define TASK2_ID 2
+// #define TASK1_ID 1
+// #define TASK2_ID 2
 
-#define TASK1_PRIO 60
-#define TASK2_PRIO 70
+// #define TASK1_PRIO 60
+// #define TASK2_PRIO 70
 
 RT_SEM sem;
 RT_MUTEX mutex_a;
@@ -87,6 +87,12 @@ int main(){
 	int stack_size = 0;
 	int mode = T_CPU(1);
 
+    int task1_id = 1;
+    int task2_id = 2;
+
+    int task1_prio = 60;
+    int task2_prio = 70;
+
     rt_task_shadow(NULL, "Main", 65, mode);
 
     rt_sem_create(&sem, "Semaphore", 0, S_PRIO);
@@ -98,12 +104,12 @@ int main(){
     rt_mutex_create(&mutex_b,"B Mutex");
  
 	//Creating threads
-	rt_task_create(&task1, "Task1", stack_size, TASK1_PRIO, mode);
-	rt_task_create(&task2, "Task2", stack_size, TASK2_PRIO, mode);
+	rt_task_create(&task1, "Task1", stack_size, task1_prio, mode);
+	rt_task_create(&task2, "Task2", stack_size, task2_prio, mode);
 
 	//Start threads
-	rt_task_start(&task1, task_func,(&(struct TaskParameters){TASK1_ID, TASK1_PRIO}));
-	rt_task_start(&task2, task_func,(&(struct TaskParameters){TASK2_ID, TASK2_PRIO}));
+	rt_task_start(&task1, task_func,(&(struct TaskParameters){task1_id, task1_prio}));
+	rt_task_start(&task2, task_func,(&(struct TaskParameters){task2_id, task2_prio}));
 
     rt_task_sleep(100*1000*1000);
     rt_printf("Broadcasting...\r\n");
