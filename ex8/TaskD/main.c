@@ -60,8 +60,8 @@ void task_func(void * args){
             busy_wait_us(1);
             break;
         case 2:
-            rt_printf("Task: %d\t...Sleep for 1 time unit\r\n", taskparam.id);
-            rt_task_sleep(1);
+            // rt_printf("Task: %d\t...Sleep for 1 time unit\r\n", taskparam.id);
+            // rt_task_sleep(1);
             rt_printf("Task: %d\t...Acquire Mutex B\r\n", taskparam.id);
             rt_mutex_acquire(&mutex_b, TM_INFINITE);
             rt_printf("Task: %d\t...Busy-wait for 1 time unit\r\n", taskparam.id);
