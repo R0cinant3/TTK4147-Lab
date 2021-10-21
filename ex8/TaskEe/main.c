@@ -16,6 +16,9 @@ RT_MUTEX mutex_b;
 RT_TASK task1;
 RT_TASK task2;
 
+int task1_prio = 60;
+int task2_prio = 70
+
 typedef struct TaskParameters{
     uint8_t id;
     uint8_t priority;
@@ -43,7 +46,7 @@ void task_func(void * args){
         case 1:
             rt_sem_p(&sem, TM_INFINITE);
             rt_mutex_acquire(&mutex_a, TM_INFINITE);
-            rt_task_set_priority(&task1,taskparam.priority+1);
+            rt_task_set_priority(&task1,task2_prio+1);
             rt_printf("Task: %d\t...Acquire Mutex A\r\n", taskparam.id);
             rt_printf("Task: %d\t...Busy-wait for 3 time units\r\n", taskparam.id);
             busy_wait_us(3);
@@ -56,7 +59,7 @@ void task_func(void * args){
             rt_printf("Task: %d\t...Release Mutex A\r\n", taskparam.id);
             rt_mutex_release(&mutex_a);
 
-            rt_task_set_priority(&task1,taskparam.priority);
+            rt_task_set_priority(&task1,task1_prio);
             rt_printf("Task: %d\t...Busy-wait for 1 time unit\r\n", taskparam.id);
             busy_wait_us(1);
             // rt_sem_v(&sem);
@@ -94,8 +97,7 @@ int main(){
     int task1_id = 1;
     int task2_id = 2;
 
-    int task1_prio = 60;
-    int task2_prio = 70;
+;
 
     rt_task_shadow(NULL, "Main", 75, mode);
 
