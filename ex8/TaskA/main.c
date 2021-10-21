@@ -3,7 +3,7 @@
 #include <pthread.h>
 #include <native/task.h>
 #include <native/timer.h>
-#include <native/sem.h.>
+#include <native/sem.h>
 #include <sys/mman.h>
 #include <unistd.h>
 
