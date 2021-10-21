@@ -13,6 +13,9 @@ RT_SEM sem;
 RT_MUTEX mutex_a;
 RT_MUTEX mutex_b;
 
+RT_TASK task1;
+RT_TASK task2;
+
 typedef struct TaskParameters{
     uint8_t id;
     uint8_t priority;
@@ -98,8 +101,7 @@ int main(){
 
     rt_sem_create(&sem, "Semaphore", 0, S_PRIO);
 
-    RT_TASK task1;
-    RT_TASK task2;
+
 
     rt_mutex_create(&mutex_a,"A Mutex");
     rt_mutex_create(&mutex_b,"B Mutex");
