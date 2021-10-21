@@ -116,6 +116,9 @@ int main(){
     rt_printf("END...\r\n");
 
     rt_sem_delete(&sem);
+    rt_mutex_delete(&mutex_a);
+    rt_mutex_delete(&mutex_b);
+
 
 
     return 0;
